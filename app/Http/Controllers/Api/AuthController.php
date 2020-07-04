@@ -65,8 +65,9 @@ class AuthController extends Controller
                 'data' => $user,
             ]);
         }
+    }
 
-        /**
+    /**
      * Login user and create token
      *
      * @param  [string] email
@@ -159,7 +160,7 @@ class AuthController extends Controller
         $user->active = true;
         $user->activation_token = '';
         $user->save();
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'user activated',
