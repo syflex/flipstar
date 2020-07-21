@@ -32,6 +32,7 @@ Route::namespace('Api')->group(function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
+        Route::resource('category', 'CategoryController');
     });
 
     // Route::group(['middleware' => 'api', 'prefix' => 'password'], function () {
