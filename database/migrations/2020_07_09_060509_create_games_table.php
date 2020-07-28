@@ -15,6 +15,11 @@ class CreateGamesTable extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->unsigned();
+            $table->string('name', 100)->nullable();
+            $table->double('amount', 15, 8)->nullable()->default(0.0);
+            $table->tinyInteger('numbers')->nullable()->default(3);
+            $table->boolean('is_completed')->nullable()->default(false);
             $table->timestamps();
         });
     }

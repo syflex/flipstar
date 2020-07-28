@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\User;
+use App\UserWallet;
 use Validator;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -21,7 +23,7 @@ class AuthController extends Controller
      * @return [string] message
      */
     public function signup(Request $request)
-    {       
+    {
 
         $messages = [
             'name.required'    => 'Enter full name!',
@@ -38,7 +40,7 @@ class AuthController extends Controller
             'password_confirmation' => 'required|same:password',
         ], $messages);
 
-        $user = User::where('email', $request->get('email'))->first();        
+        $user = User::where('email', $request->get('email'))->first();
 
         if ($user) {
             return response()->json([
@@ -50,19 +52,23 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => $validator->errors()
             ], 406);
-        } else {            
+        } else {
             $input = $request->all();
+            $input['password'] = Hash::make($request->get('password'));
             $user = User::create($input);
+            UserWallet::create([
+                'user_id' => $user->id
+            ]);
 
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->token;
             $token->save();
-            
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'User created successfully',
                 'access_token' => $tokenResult->accessToken,
-                'data' => $user,
+                'data' => $user->load('wallet'),
             ]);
         }
     }
@@ -113,7 +119,7 @@ class AuthController extends Controller
             'status' => 'success',
             'access_token' => $tokenResult->accessToken,
             'message' => 'login successful',
-            'data' => $user
+            'data' => $user->load('wallet')
         ]);
     }
 
@@ -126,7 +132,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $request->user()->token()->revoke();
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'Logged out'
@@ -144,7 +150,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'user fetched',
-            'data' => $user
+            'data' => $user->load('wallet')
         ]);
     }
 

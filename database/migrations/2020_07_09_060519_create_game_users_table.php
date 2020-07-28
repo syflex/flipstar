@@ -15,6 +15,9 @@ class CreateGameUsersTable extends Migration
     {
         Schema::create('game_users', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->unsigned();
+            $table->integer('game_id')->unsigned();
+            $table->string('star')->nullable();
             $table->timestamps();
         });
     }

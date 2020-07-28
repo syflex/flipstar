@@ -33,6 +33,7 @@ Route::namespace('Api')->group(function () {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
         Route::resource('category', 'CategoryController');
+        Route::resource('game', 'GameController');
     });
 
     // Route::group(['middleware' => 'api', 'prefix' => 'password'], function () {
