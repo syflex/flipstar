@@ -52,9 +52,9 @@ class GameController extends Controller
         $game = Game::create($input);
 
         GameUser::create([
-            'user_id' => Auth::user()->id;
-            'game_id' => $game->id;
-            'star' => $request->get('star');
+            'user_id' => Auth::user()->id,
+            'game_id' => $game->id,
+            'star' => $request->get('star')
         ]);
 
         return response()->json([

@@ -38,9 +38,9 @@ class FlipController extends Controller
         UserWallet::where('user_id', Auth::user()->id)->decrement('amount', $request->get('category'));
 
         $game = GameUser::create([
-            'user_id' => Auth::user()->id;
-            'game_id' => $request->get('game_id');
-            'star' => $request->get('star');
+            'user_id' => Auth::user()->id,
+            'game_id' => $request->get('game_id'),
+            'star' => $request->get('star'),
         ]);
 
         return response()->json([
