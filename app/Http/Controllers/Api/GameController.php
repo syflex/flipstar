@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Game;
-use App\GameUser;
+use App\GameUsers;
 use App\UserWallet;
 use Auth;
 
@@ -22,7 +22,7 @@ class GameController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'all games',
-            'data' => $games->load('user'),
+            'data' => $games->load('user','players','players.user'),
         ]);
     }
 
@@ -51,10 +51,10 @@ class GameController extends Controller
         $input['amount'] = $request->get('category');
         $game = Game::create($input);
 
-        GameUser::create([
+        GameUsers::create([
             'user_id' => Auth::user()->id,
             'game_id' => $game->id,
-            'star' => $request->get('star')
+            'star' => $request->get('ratingModel')
         ]);
 
         return response()->json([

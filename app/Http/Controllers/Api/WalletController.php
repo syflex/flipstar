@@ -42,7 +42,7 @@ class WalletController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'User created successfully',
+            'message' => 'user credited',
             'data' => $wallet,
         ]);
     }

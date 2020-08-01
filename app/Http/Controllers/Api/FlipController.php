@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\UserWallet;
+use App\GameUsers;
+use Auth;
 
 class FlipController extends Controller
 {
@@ -37,7 +40,7 @@ class FlipController extends Controller
     {
         UserWallet::where('user_id', Auth::user()->id)->decrement('amount', $request->get('category'));
 
-        $game = GameUser::create([
+        $game = GameUsers::create([
             'user_id' => Auth::user()->id,
             'game_id' => $request->get('game_id'),
             'star' => $request->get('star'),
