@@ -35,6 +35,7 @@ Route::namespace('Api')->group(function () {
         Route::resource('category', 'CategoryController');
         Route::resource('game', 'GameController');
         Route::resource('flip', 'FlipController');
+        Route::resource('wallet', 'WalletController');
     });
 
     // Route::group(['middleware' => 'api', 'prefix' => 'password'], function () {
