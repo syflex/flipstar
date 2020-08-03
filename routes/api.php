@@ -36,6 +36,8 @@ Route::namespace('Api')->group(function () {
         Route::resource('game', 'GameController');
         Route::resource('flip', 'FlipController');
         Route::resource('wallet', 'WalletController');
+        Route::resource('account', 'UserBankController');
+        Route::resource('withdrawals', 'WithdrawalsController');
     });
 
     // Route::group(['middleware' => 'api', 'prefix' => 'password'], function () {

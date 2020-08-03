@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\UserWallet;
+use Auth;
 
 class WalletController extends Controller
 {
@@ -15,7 +16,7 @@ class WalletController extends Controller
      */
     public function index()
     {
-        //
+       
     }
 
     /**
@@ -25,7 +26,7 @@ class WalletController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -36,9 +37,8 @@ class WalletController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $input['user_id'] = auth()->id;
-        $wallet = UserWallet::create($input);
+
+        $wallet = UserWallet::where('user_id', Auth::user()->id)->increment('amount', $request->get('amount'));
 
         return response()->json([
             'status' => 'success',
@@ -55,7 +55,7 @@ class WalletController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -66,7 +66,7 @@ class WalletController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**

@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\UserWallet;
-use App\GameUsers;
-use App\Game;
-use App\User;
+use App\UserBank;
 use Auth;
 
-class FlipController extends Controller
+class UserBankController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +26,7 @@ class FlipController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -40,35 +37,14 @@ class FlipController extends Controller
      */
     public function store(Request $request)
     {
-        UserWallet::where('user_id', Auth::user()->id)->decrement('amount', $request->get('category'));
-
-        $game = GameUsers::create([
-            'user_id' => Auth::user()->id,
-            'game_id' => $request->get('game_id'),
-            'star' => $request->get('ratingModel'),
-        ]);
-
-        $users =  GameUsers::where('game_id',$request->get('game_id'))->get();
-        $is_complet = false;
-
-        $data = $game;
-
-        if (count($users) >= 3) {
-            Game::where('id', $request->get('game_id'))->update([
-                'is_completed' => true
-            ]);
-
-            $winner_id =  GameUsers::where('game_id',$request->get('game_id'))->inRandomOrder()->limit(1)->first('user_id');
-            $winner = User::where('id', $winner_id->user_id)->first();
-            $is_complet = true;
-            $data = $winner;
-        }
+        $input = $request->all();
+        $input['user_id'] = Auth::user()->id;
+        $account  = UserBank::updateOrCreate(['user_id' => Auth::user()->id], $input);
 
         return response()->json([
             'status' => 'success',
             'message' => 'success',
-            'is_complet' => $is_complet,
-            'data' => $data,
+            'data' => $account,
         ]);
     }
 
@@ -80,7 +56,12 @@ class FlipController extends Controller
      */
     public function show($id)
     {
-        //
+        $account =  UserBank::where('user_id', Auth::user()->id)->first();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'user credited',
+            'data' => $account,
+        ]);
     }
 
     /**
@@ -91,7 +72,7 @@ class FlipController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
