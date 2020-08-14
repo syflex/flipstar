@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\User;
 use App\UserWallet;
+use App\UserBank;
 use Validator;
 use Auth;
 use Illuminate\Support\Facades\Hash;
@@ -56,7 +57,11 @@ class AuthController extends Controller
             $input = $request->all();
             $input['password'] = Hash::make($request->get('password'));
             $user = User::create($input);
+
             UserWallet::create([
+                'user_id' => $user->id
+            ]);
+            UserBank::create([
                 'user_id' => $user->id
             ]);
 
@@ -68,7 +73,7 @@ class AuthController extends Controller
                 'status' => 'success',
                 'message' => 'User created successfully',
                 'access_token' => $tokenResult->accessToken,
-                'data' => $user->load('wallet'),
+                'data' => $user->load('wallet','bank'),
             ]);
         }
     }
@@ -119,7 +124,7 @@ class AuthController extends Controller
             'status' => 'success',
             'access_token' => $tokenResult->accessToken,
             'message' => 'login successful',
-            'data' => $user->load('wallet')
+            'data' => $user->load('wallet','bank')
         ]);
     }
 
@@ -150,7 +155,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'user fetched',
-            'data' => $user->load('wallet')
+            'data' => $user->load('wallet','bank')
         ]);
     }
 

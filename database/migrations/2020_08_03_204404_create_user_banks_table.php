@@ -21,6 +21,7 @@ class CreateUserBanksTable extends Migration
             $table->string('bank_name')->nullable();
             $table->string('bank_branch')->nullable();
             $table->integer('bank_id')->nullable();
+            $table->string('recipient_code')->nullable();
             $table->timestamps();
         });
     }

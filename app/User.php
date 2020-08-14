@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\UserWallet');
     }
+
+    public function bank()
+    {
+        return $this->hasOne('App\UserBank');
+    }
 }
