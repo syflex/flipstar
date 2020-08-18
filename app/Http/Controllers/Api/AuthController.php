@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use Carbon\Carbon;
 use App\User;
 use App\UserWallet;
@@ -56,6 +57,7 @@ class AuthController extends Controller
         } else {
             $input = $request->all();
             $input['password'] = Hash::make($request->get('password'));
+
             $user = User::create($input);
 
             UserWallet::create([
@@ -135,7 +137,7 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $user = Auth::user();
+        // $user = Auth::user();
         $request->user()->token()->revoke();
 
         return response()->json([

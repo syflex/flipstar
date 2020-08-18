@@ -18,7 +18,10 @@ class GameController extends Controller
      */
     public function index()
     {
+        // step one - get all games
         $games = Game::get();
+
+        // step two - return games with creator and players information
         return response()->json([
             'status' => 'success',
             'message' => 'all games',
@@ -44,19 +47,23 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
+        // step one deducts the game amount from the current users wallet
         UserWallet::where('user_id', Auth::user()->id)->decrement('amount', $request->get('category'));
 
+        // step two - created the game
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
         $input['amount'] = $request->get('category');
         $game = Game::create($input);
 
+         // step three- create or add the current player to the game play
         GameUsers::create([
             'user_id' => Auth::user()->id,
             'game_id' => $game->id,
             'star' => $request->get('ratingModel')
         ]);
 
+        // return the game created
         return response()->json([
             'status' => 'success',
             'message' => 'success',

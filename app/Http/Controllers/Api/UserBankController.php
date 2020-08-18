@@ -37,10 +37,14 @@ class UserBankController extends Controller
      */
     public function store(Request $request)
     {
+        // get the banks details from front-end
+        // then we add the user_id as the current login user
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
+        // then we create or update the bank table with the information
         $account  = UserBank::updateOrCreate(['user_id' => Auth::user()->id], $input);
 
+        // return the account
         return response()->json([
             'status' => 'success',
             'message' => 'success',
@@ -56,10 +60,12 @@ class UserBankController extends Controller
      */
     public function show($id)
     {
+        // get the current users bank details
         $account =  UserBank::where('user_id', Auth::user()->id)->first();
+        // return the bank details
         return response()->json([
             'status' => 'success',
-            'message' => 'user credited',
+            'message' => 'success',
             'data' => $account,
         ]);
     }

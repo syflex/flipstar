@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('Api')->group(function () {
 
+    // unauthenticated routes
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
     Route::get('signup/activate/{token}', 'AuthController@signupActivate');
-
 
     //password reset routes
     // Route::group(['middleware' => 'api', 'prefix' => 'password'], function () {
@@ -29,9 +29,11 @@ Route::namespace('Api')->group(function () {
     //     Route::post('reset', 'Auth\PasswordResetController@reset');
     // });
 
+    // authenticated routes using middleware
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
+        
         Route::resource('category', 'CategoryController');
         Route::resource('game', 'GameController');
         Route::resource('flip', 'FlipController');
@@ -39,10 +41,4 @@ Route::namespace('Api')->group(function () {
         Route::resource('account', 'UserBankController');
         Route::resource('withdrawals', 'WithdrawalsController');
     });
-
-    // Route::group(['middleware' => 'api', 'prefix' => 'password'], function () {
-    //     Route::post('create', 'PasswordResetController@create');
-    //     Route::get('find/{token}', 'PasswordResetController@find');
-    //     Route::post('reset', 'PasswordResetController@reset');
-    // });
 });
