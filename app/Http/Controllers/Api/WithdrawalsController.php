@@ -39,7 +39,6 @@ class WithdrawalsController extends Controller
     public function store(Request $request)
     {
         UserWallet::where('user_id', Auth::user()->id)->decrement('amount', $request->get('amount'));
-
         $wallet = UserWallet::where('user_id', Auth::user()->id)->first();
 
         $withdrawals = Withdrawals::create([

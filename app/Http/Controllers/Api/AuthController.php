@@ -128,6 +128,7 @@ class AuthController extends Controller
             'message' => 'login successful',
             'data' => $user->load('wallet','bank')
         ]);
+        
     }
 
      /**

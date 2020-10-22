@@ -39,7 +39,7 @@ class WalletController extends Controller
     {
         // step one - we increment the current users wallet base on the amount paid
         $wallet = UserWallet::where('user_id', Auth::user()->id)->increment('amount', $request->get('amount'));
-
+        
         // return walet detaisl
         return response()->json([
             'status' => 'success',
